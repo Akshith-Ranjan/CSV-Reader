@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Affinity CSV Viewer</title>
+    <!-- Bootstrap compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <!-- Bootstrap compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+      body{margin-top:30px;}
+    </style>
+  </head>
+  <body>
+    <div class="container text-center">
+      <div class="jumbotron">
+        <div class="row">
+          <h1>Affinity CSV Viewer</h1>
+          <p><em>Select the file you want to view</em></p>
+
+          <form action="/" method="GET">
+            <select  name="a" class="selectpicker" required>
+              <option value="">Choose</option>
+              <option value="interns.csv">Interns</option>
+              <option value="employees.csv">Employees</option>
+              <option value="customers.csv">Customers</option>
+            </select>
+            <select name="b" class="selectpicker" multiple required>
+              <option value="0">ID</option>
+              <option value="1">First_Name</option>
+              <option value="2">Last_Name</option>
+              <option value="3">Email</option>
+              <option value="4">Gender</option>
+              <option value="5">City</option>
+            </select>
+            <button type="submit" class="btn btn-default btn-primary">Submit</button>
+          </form>
+          {% if error%}
+            <h3>{{error[0]}}</h3><p>{{error[1]}}</p>
+          {% endif%}
+          {% if data and b and a %}
+          <div class="col-xm-12 col-md-10 col-md-offset-1">
+          <h2 class="text-left">{{a}}</h2>
+          <table class="table table-bordered text-left">
+            <thead>
+              <tr>
+                {% for field in data[0] %}
+                  {% if data[0].index(field) in b %}
+                        <th>{{field }}</th>
+                  {% endif %}
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in range(1,data|length) %}
+              <tr>
+                {% for field in data[i]  %}
+                  {% if data[i].index(field) in b %}
+                        <td>{{field }}</td>
+                  {% endif %}
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+          {% endif %}
+
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
